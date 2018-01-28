@@ -1,0 +1,47 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[dev-packages]
+
+
+
+[packages]
+
+Django = "==1.11.9"
+django-environ = "==0.4.4"
+django-crispy-forms = "==1.7.0"
+django-model-utils = "==3.1.1"
+Pillow = "==5.0.0"
+"argon2_cffi" = "==18.1.0"
+django-allauth = "==0.34.0"
+"psycopg2" = "==2.7.3.2"
+awesome-slugify = "==1.6.5"
+pytz = "==2017.3"
+django-redis = "==4.8.0"
+redis = ">=2.10.5"
+gevent = "==1.2.2"
+gunicorn = "==19.7.1"
+"boto3" = "==1.5.20"
+django-storages = "==1.6.5"
+Collectfast = "==0.6.0"
+django-anymail = "==1.2"
+coverage = "==4.4.2"
+django_coverage_plugin = "==1.5.0"
+Sphinx = "==1.6.6"
+django-extensions = "==1.9.9"
+werkzeug = "==0.14.1"
+django-test-plus = "==1.0.22"
+factory_boy = "==2.9.2"
+django-debug-toolbar = "==1.9.1"
+ipdb = "==0.10.3"
+pytest-django = "==3.1.2"
+pytest-sugar = "==0.9.0"
+
+
+[requires]
+
+python_version = "3.6"
