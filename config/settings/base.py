@@ -45,7 +45,6 @@ DJANGO_APPS = [
     'django.contrib.admin',
 ]
 THIRD_PARTY_APPS = [
-    'crispy_forms',  # Form layouts
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
@@ -56,6 +55,7 @@ LOCAL_APPS = [
     # custom users app
     'brightparagon.users.apps.UsersConfig',
     # Your stuff: custom apps go here
+    'brightparagon.images.apps.ImagesConfig'
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
