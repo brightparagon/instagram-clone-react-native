@@ -4,7 +4,6 @@ from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from .models import User
 
-
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
