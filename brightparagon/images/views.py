@@ -17,7 +17,7 @@ class ListAllComments(APIView):
     all_comments = models.Comment.objects.all()
 
     serializer = serializers.CommentSerializer(all_comments, many=True)
-
+ 
     return Response(data=serializer.data) 
 
 class ListAllLikes(APIView):
