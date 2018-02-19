@@ -13,6 +13,10 @@ class ListAllImages(APIView):
 class ListAllComments(APIView):
 
   def get(self, request, format=None):
+    
+    # get comments owned by the authenticated user
+    # user_id = request.user.id
+    # all_comments = models.Comment.objects.filter(creator=user_id)
 
     all_comments = models.Comment.objects.all()
 
