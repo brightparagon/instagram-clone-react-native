@@ -17,7 +17,7 @@ class Feed(APIView):
         image_list.append(image)
 
     sorted_list = sorted(image_list, key=lambda image: image.created_at, reverse=True)
-    
+
     serializer = serializers.ImageSerializer(sorted_list, many=True)
 
     return Response(serializer.data)
@@ -76,7 +76,7 @@ class UnLikeImage(APIView):
 class CommentOnImage(APIView):
 
   def post(self, request, image_id, format=None):
-    
+
     user = request.user
     try:
       found_image = models.Image.objects.get(id=image_id)
@@ -102,3 +102,10 @@ class Comment(APIView):
       return Response(status=status.HTTP_204_NO_CONTENT)
     except models.Comment.DoesNotExist:
       return Response(status=status.HTTP_404_NOT_FOUND)
+
+class Search(APIView):
+
+    def get(self, request, format=None):
+        hashtags = request.query_params.get('hashtags', None)
+        print(hashtags)
+        pass

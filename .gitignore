@@ -304,5 +304,7 @@ pip-selfcheck.json
 
 
 brightparagon/media/
-
+.idea/
+Pipfile
+Pipfile.lock
 
