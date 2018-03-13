@@ -2,6 +2,16 @@ from rest_framework import serializers
 from . import models
 from brightparagon.users import models as user_models
 
+class SmallImageSerializer(serializers.ModelSerializer):
+    """used for the notifications"""
+
+    class Meta:
+        model = models.Image
+        fields = (
+            'file',
+        )
+
+
 class CountImageSerializer(serializers.ModelSerializer):
 
   class Meta:
