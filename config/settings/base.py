@@ -57,7 +57,8 @@ LOCAL_APPS = [
     # custom users app
     'brightparagon.users.apps.UsersConfig',
     # Your stuff: custom apps go here
-    'brightparagon.images.apps.ImagesConfig'
+    'brightparagon.images.apps.ImagesConfig',
+    'brightparagon.notifications.apps.NotificationsConfig', # notifications app
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
