@@ -5,7 +5,6 @@ from . import models, serializers
 from brightparagon.notifications import views as notification_views
 
 class ExploreUsers(APIView):
-
     def get(self, request, format=None):
 
         last_five = models.User.objects.all().order_by('-date_joined')[:5]
@@ -13,7 +12,6 @@ class ExploreUsers(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class FollowUser(APIView):
-
     def post(self, request, user_id, format=None):
 
         user = request.user
@@ -33,7 +31,6 @@ class FollowUser(APIView):
         return Response(status=status.HTTP_200_OK)
 
 class UnFollowUser(APIView):
-
     def post(self, request, user_id, format=None):
 
         user = request.user
@@ -84,7 +81,6 @@ class UserProfile(APIView):
 
 
 class UserFollowers(APIView):
-
     def get(self, request, username, format=None):
 
         try:
@@ -98,7 +94,6 @@ class UserFollowers(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class UserFollowing(APIView):
-
     def get(self, request, username, format=None):
 
         try:
@@ -112,7 +107,6 @@ class UserFollowing(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class Search(APIView):
-
     def get(self, request, format=None):
         username = request.query_params.get('username', None)
         users = models.User.objects.filter(username__istartswith=username)
@@ -123,3 +117,24 @@ class Search(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+class ChangePassword(APIView):
+    def put(self, request, username, format=None):
+        user = request.user
+
+        if user.username == username:
+            current_password = request.data.get('current_password', None)
+
+            if current_password is not None:
+                password_match = user.check_password(current_password)
+
+                if password_match:
+                    new_password = request.data.get('new_password', None)
+
+                    if new_password is not None:
+                        user.set_password(new_password)
+                        user.save()
+                        return Response(status=status.HTTP_200_OK)
+
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
