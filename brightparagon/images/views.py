@@ -6,28 +6,36 @@ from brightparagon.notifications import views as notification_views
 from brightparagon.users import models as user_models
 from brightparagon.users import serializers as user_serializers
 
-class Feed(APIView):
+class Images(APIView):
+    def get(self, request, format=None):
+        user = request.user
 
-  def get(self, request, format=None):
+        following_users = user.following.all()
+        image_list = []
+        for following_user in following_users:
+            user_images = following_user.images.all()[:2]
+            for image in user_images:
+                image_list.append(image)
 
-    user = request.user
+        my_images = user.images.all()[:2]
+        for image in my_images:
+            image_list.append(image)
 
-    following_users = user.following.all()
-    image_list = []
-    for following_user in following_users:
-      user_images = following_user.images.all()[:2]
-      for image in user_images:
-        image_list.append(image)
+        sorted_list = sorted(image_list, key=lambda image: image.created_at, reverse=True)
 
-    my_images = user.images.all()[:2]
-    for image in my_images:
-        image_list.append(image)
+        serializer = serializers.ImageSerializer(sorted_list, many=True)
 
-    sorted_list = sorted(image_list, key=lambda image: image.created_at, reverse=True)
+        return Response(serializer.data)
 
-    serializer = serializers.ImageSerializer(sorted_list, many=True)
+    def post(self, request, format=None):
+        user = request.user
+        serializer = serializers.InputImageSerializer(data=request.data)
 
-    return Response(serializer.data)
+        if serializer.is_valid():
+            serializer.save(creator=user)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LikeImage(APIView):
 
