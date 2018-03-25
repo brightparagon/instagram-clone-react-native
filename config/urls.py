@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
 from rest_framework_jwt.views import obtain_jwt_token
+from brightparagon import views
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
@@ -20,6 +21,7 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     url(r'^images/', include('brightparagon.images.urls', namespace='images')),
     url(r'^notifications/', include('brightparagon.notifications.urls', namespace='notifications')),
+    url(r'^', views.ReactAppView.as_view()),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
