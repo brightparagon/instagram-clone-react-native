@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "redux-i18n": "^1.5.13"
+  }
+}
