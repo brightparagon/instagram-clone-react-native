@@ -5,9 +5,8 @@ import { ConnectedRouter } from "react-router-redux";
 import store, { history } from "redux/configureStore";
 import I18n from "redux-i18n";
 import { translations } from "translations";
-import "index.css";
-import App from "App";
-// import 'ReactotronConfig';
+import App from "components/App";
+// import 'ReactotronConfig'; // not used
 
 ReactDOM.render(
   <Provider store={store}>

@@ -5,7 +5,7 @@ import createHistory from "history/createBrowserHistory";
 import { i18nState } from "redux-i18n";
 import { composeWithDevTools } from "redux-devtools-extension";
 import users from "redux/modules/users";
-// import Reactotron from "ReactotronConfig";
+// import Reactotron from "ReactotronConfig"; // not used
 
 const NODE_ENV = process.env.NODE_ENV;
 
