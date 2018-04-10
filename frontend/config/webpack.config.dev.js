@@ -166,7 +166,7 @@ module.exports = {
                   importLoaders: 1,
                   modules: true,
                   localIdentName: '[path][name]__[local]--[hash:base64:5]',
-                  camelCase: "dashes",
+                  camelCase: 'dashes',
                 },
               },
               {
@@ -194,7 +194,7 @@ module.exports = {
                 loader: require.resolve('sass-loader'),
                 options: {
                   sourceMap: true,
-                  data: `@import "${paths.appSrc}/config/_variables.scss";`
+                  data: `@import "${paths.appSrc}/config/_variables.scss";`,
                 }
               }
             ],
