@@ -23,7 +23,6 @@
         flex-wrap: wrap;
         @include breakpoint(mobileonly) {
           justify-content: center;
-          margin: 0 auto;
         }
         .list-item {
           margin-right: 15px;
