@@ -13,7 +13,6 @@
     justify-content: center;
   }
   .column {
-    margin-bottom: 15px;
     @include breakpoint(mobileonly) {
       margin-bottom: 0;
     }
@@ -29,7 +28,7 @@
           color: $dark-blue;
           cursor: pointer;
           @include breakpoint(mobileonly) {
-            margin-bottom: 15px;
+            // margin-bottom: 15px;
           }
         }
       }
