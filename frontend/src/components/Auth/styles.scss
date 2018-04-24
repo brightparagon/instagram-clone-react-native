@@ -4,14 +4,36 @@
   margin: 0 auto;
   display: flex;
   min-height: 100%;
-  margin-top: 30px;
+  margin-top: 35px;
   justify-content: center;
   align-items: center;
+  @include breakpoint("phone") {
+    margin-top: 10px;
+  }
   .column {
     width: 40%;
+    @include breakpoint("phone") {
+      &:first-child {
+        display: none;
+      }
+    }
+    @include breakpoint("tablet") {
+      &:first-child {
+        display: none;
+      }
+    }
     &:last-child {
       width: 38%;
       margin-left: 35px;
+      @include breakpoint("phone") {
+        width: 100%;
+        margin: 0;
+      }
+      @include breakpoint("tablet") {
+        width: 70%;
+        max-width: 350px;
+        margin: 0;
+      }
     }
     .app-box {
       display: flex;
@@ -32,11 +54,15 @@
       text-align: center;
       padding: 15px;
       @include boxBorder(no);
+      @include breakpoint("phone") {
+        background-color: transparent;
+        border: 0;
+      }
       .change-link {
         color: $light-blue;
         cursor: pointer;
       }
-      p {
+      .text {
         margin: 15px;
       }
     }
@@ -47,6 +73,6 @@
       img {
         height: 60px;
       }
-    }      
+    }
   }
 }
