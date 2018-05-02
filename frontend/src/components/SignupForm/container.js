@@ -21,6 +21,10 @@ class Container extends React.Component {
     // action
   };
 
+  _handleFacebookLogin = response => {
+    console.log(response);
+  };
+
   render() {
     const { email, fullname, username, password } = this.state;
     return (
@@ -31,6 +35,7 @@ class Container extends React.Component {
         passwordValue={password}
         handleInputChange={this._handleInputChange}
         handleSubmit={this._handleSubmit}
+        handleFacebookLogin={this._handleFacebookLogin}
       />
     );
   }
