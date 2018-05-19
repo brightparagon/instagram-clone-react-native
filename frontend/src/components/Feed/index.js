@@ -1,4 +1,13 @@
 import { connect } from "react-redux";
 import Container from "./container";
+import { actionCreators } from "redux/modules/photo";
 
-export default connect()(Container);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    getFeed: () => {
+      dispatch(actionCreators.getFeed());
+    }
+  }
+};
+
+export default connect(null, mapDispatchToProps)(Container);

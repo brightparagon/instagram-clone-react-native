@@ -1,7 +1,8 @@
 // initial state for user reducer
 const initialState = {
-  isLoggedIn: localStorage.getItem("jwt") ? true : false
-}
+  isLoggedIn: localStorage.getItem("jwt") ? true : false,
+  token: localStorage.getItem("jwt") // if not exist it's null
+};
 
 // actions
 const SAVE_TOKEN = "SAVE_TOKEN";

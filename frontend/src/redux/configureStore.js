@@ -5,6 +5,7 @@ import createHistory from "history/createBrowserHistory";
 import { i18nState } from "redux-i18n";
 import { composeWithDevTools } from "redux-devtools-extension";
 import user from "redux/modules/user";
+import photo from "redux/modules/photo";
 // import Reactotron from "ReactotronConfig"; // not used
 
 const NODE_ENV = process.env.NODE_ENV;
@@ -19,6 +20,7 @@ if (NODE_ENV === "development") {
 
 const reducer = combineReducers({
   user,
+  photo,
   routing: routerReducer,
   i18nState
 });
