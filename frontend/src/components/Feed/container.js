@@ -12,12 +12,29 @@ class Container extends React.Component {
   };
 
   render() {
-    return <Feed {...this.state} />;
+    const { feed } = this.props;
+    return <Feed {...this.state} feed={feed} />;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.feed) {
+      this.setState({
+        loading: false
+      });
+    }
   }
 
   componentDidMount() {
     const { getFeed } = this.props;
-    getFeed();
+
+    // persistence: if reducer already has data don't send an api request
+    if(!this.props.feed) {
+      getFeed();
+    } else {
+      this.setState({
+        loading: false
+      });
+    }
   }
 }
 
