@@ -1,3 +1,5 @@
+import { actionCreators as userActions } from "redux/modules/user";
+
 const initialState = {};
 
 function getFeed() {
@@ -8,7 +10,13 @@ function getFeed() {
         Authorization: `JWT ${token}`
       }
     })
-    .then(response => response.json())
+    .then(response => {
+      if(response.status === 401) {
+        // if django server responded with 401 status dispatch logout action
+        dispatch(userActions.logout());
+      }
+      return response.json();
+    })
     .then(json => console.log(json))
   }
 }
