@@ -10,7 +10,7 @@ const Feed = props => {
   } else if(props.feed) {
     return <RenderFeed {...props} />;
   }
-}
+};
 
 const LoadingFeed = props => (
   <div className={styles.feed}>
@@ -24,8 +24,9 @@ const RenderFeed = props => (
   </div>
 );
 
-Feed.propTyeps = {
-  loading: PropTypes.bool.isRequired
+Feed.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  feed: PropTypes.array
 };
 
 export default Feed;
