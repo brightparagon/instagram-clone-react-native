@@ -23,7 +23,7 @@ class Images(APIView):
 
         sorted_list = sorted(image_list, key=lambda image: image.created_at, reverse=True)
 
-        serializer = serializers.ImageSerializer(sorted_list, many=True)
+        serializer = serializers.ImageSerializer(sorted_list, many=True, context={'request': request})
 
         return Response(serializer.data)
 
@@ -44,7 +44,7 @@ class LikeImage(APIView):
         like_creators_ids = likes.values('creator_id')
         users = user_models.User.objects.filter(id__in=like_creators_ids)
 
-        serializer = user_serializers.ListUserSerializer(users, many=True)
+        serializer = user_serializers.ListUserSerializer(users, many=True, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, image_id, format=None):
@@ -140,10 +140,12 @@ class Search(APIView):
         if hashtags is not None:
             hashtags = hashtags.split(",")
             images = models.Image.objects.filter(tags__name__in=hashtags).distinct()
-            serializer = serializers.CountImageSerializer(images, many=True)
+            serializer = serializers.CountImageSerializer(images, many=True, context={'request': request})
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            images = models.Image.objects.all()[:20]
+            serializer = serializers.ImageSerializer(images, many=True, context={'request': request})
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class ModerateComments(APIView):
 
@@ -174,7 +176,7 @@ class ImageDetail(APIView):
         except models.Image.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = serializers.ImageSerializer(image)
+        serializer = serializers.ImageSerializer(image, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, image_id, format=None):

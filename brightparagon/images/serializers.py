@@ -12,7 +12,6 @@ class SmallImageSerializer(serializers.ModelSerializer):
             'file',
         )
 
-
 class CountImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Image
