@@ -8,4 +8,8 @@ TimeStamp.propTypes = {
   time: PropTypes.string.isRequired
 };
 
+TimeStamp.contextTypes = {
+  t: PropTypes.func.isRequired
+};
+
 export default TimeStamp;
