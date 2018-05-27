@@ -23,7 +23,7 @@ const FeedPhoto = (props, context) => {
       </header>
       <img src={props.file} alt={props.caption} />
       <div>
-        <PhotoActions number={props.like_count} />
+        <PhotoActions number={props.like_count} isLiked={props.is_liked} photoId={props.id} />
         <PhotoComments
           caption={props.caption}
           creator={props.creator.username}
@@ -54,7 +54,8 @@ FeedPhoto.propTypes = {
       }).isRequired
     })
   ).isRequired,
-  natural_time: PropTypes.string.isRequired
+  natural_time: PropTypes.string.isRequired,
+  is_liked: PropTypes.bool.isRequired
 };
 
 export default FeedPhoto;
