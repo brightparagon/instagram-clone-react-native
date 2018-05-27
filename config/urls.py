@@ -20,10 +20,13 @@ urlpatterns = [
 
     # Your stuff: custom urls includes go here
     url(r'^images/', include('brightparagon.images.urls', namespace='images')),
-    url(r'^notifications/', include('brightparagon.notifications.urls', namespace='notifications')),
-    url(r'^', views.ReactAppView.as_view()),
+    url(r'^notifications/', include('brightparagon.notifications.urls', namespace='notifications'))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    url(r'^', views.ReactAppView.as_view()),
+]
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

@@ -29,7 +29,7 @@ function getFeed() {
     .then(json => {
       dispatch(setFeed(json));
     });
-  }
+  };
 }
 
 // reducer

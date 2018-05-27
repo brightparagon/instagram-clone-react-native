@@ -1,9 +1,10 @@
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from taggit.managers import TaggableManager
 from brightparagon.users import models as user_models
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-# Create your models here.
+@python_2_unicode_compatible
 class TimeStampedModel(models.Model):
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
@@ -12,6 +13,7 @@ class TimeStampedModel(models.Model):
   class Meta:
     abstract = True
 
+@python_2_unicode_compatible
 class Image(TimeStampedModel):
   """ Image Model """
   file = models.ImageField()
@@ -38,6 +40,7 @@ class Image(TimeStampedModel):
   class Meta:
     ordering = ['-created_at']
 
+@python_2_unicode_compatible
 class Comment(TimeStampedModel):
   """ Comment Model """
   message = models.TextField()
@@ -47,7 +50,7 @@ class Comment(TimeStampedModel):
   def __str__(self):
     return self.message
 
-
+@python_2_unicode_compatible
 class Like(TimeStampedModel):
   """ Like Model """
   creator = models.ForeignKey(user_models.User, null=True)

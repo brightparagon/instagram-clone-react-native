@@ -25,7 +25,7 @@ class Images(APIView):
 
         serializer = serializers.ImageSerializer(sorted_list, many=True, context={'request': request})
 
-        return Response(serializer.data)
+        return Response(data=serializer.data)
 
     def post(self, request, format=None):
         user = request.user
