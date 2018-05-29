@@ -5,6 +5,7 @@ import PhotoActions from "components/PhotoActions";
 import PhotoComments from "components/PhotoComments";
 import TimeStamp from "components/TimeStamp";
 import CommentBox from "components/CommentBox";
+import UserList from "components/UserList";
 import noPhoto from "images/noPhoto.jpg";
 
 const FeedPhoto = (props, context) => {
@@ -36,8 +37,15 @@ const FeedPhoto = (props, context) => {
         <TimeStamp time={props.natural_time} />
         <CommentBox photoId={props.id} />
       </div>
+      {props.seeingLikes && (
+        <UserList title={context.t("Likes")} closeLikes={props.closeLikes} />
+      )}
     </div>
   );
+};
+
+FeedPhoto.contextTypes = {
+  t: PropTypes.func.isRequired
 };
 
 FeedPhoto.propTypes = {
