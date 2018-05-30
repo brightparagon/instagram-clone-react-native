@@ -38,6 +38,6 @@ class ListUserSerializer(serializers.ModelSerializer):
   def get_following(self, obj):
     if 'request' in self.context:
       request = self.context['request']
-      if obj in request.user.following.all()
+      if obj in request.user.following.all():
         return True
     return False

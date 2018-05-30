@@ -7,6 +7,8 @@ const initialState = {
 // actions
 const SAVE_TOKEN = "SAVE_TOKEN";
 const LOGOUT = "LOGOUT"; // remove token in browser local storage
+const FOLLOW_USER = "FOLLOW_USER";
+const UNFOLLOW_USER = "UNFOLLOW_USER";
 
 // action creators
 function saveToken(token) {
@@ -22,9 +24,23 @@ function logout() {
   };
 }
 
+function setFollowUser(userId) {
+  return {
+    type: FOLLOW_USER,
+    userId
+  };
+}
+
+function setUnfollowUser(userId) {
+  return {
+    type: UNFOLLOW_USER,
+    userId
+  };
+}
+
 // API actions
 function facebookLogin(access_token) {
-  return dispatch => {
+  return (dispatch) => {
     fetch("/users/login/facebook/", {
       method: "POST",
       headers: {
@@ -90,6 +106,18 @@ function createAccount(username, password, email) {
   };
 }
 
+function followUser(userId) {
+  return (dispatch, getState) => {
+    dispatch(setFollowUser(userId));
+  };
+}
+
+function unfollowUser(userId) {
+  return (dispatch, getState) => {
+    dispatch(setUnfollowUser(userId));
+  };
+}
+
 // reducer
 function reducer(state = initialState, action) {
   switch(action.type) {
@@ -98,6 +126,12 @@ function reducer(state = initialState, action) {
     
     case LOGOUT:
       return applyLogout(state, action);
+
+    case FOLLOW_USER:
+      return applyFollowUser(state, action);
+
+    case UNFOLLOW_USER:
+      return applyUnfollowUser(state, action);
 
     default:
       return state;
@@ -122,11 +156,39 @@ function applyLogout(state, action) {
   };
 }
 
+function applyFollowUser(state, action) {
+  const { userId } = action;
+  const { userList } = state;
+  const updatedUserList = userList.map((user) => {
+    if(user.id === userId) {
+      return { ...user, following: true };
+    }
+    return user;
+  });
+
+  return {...state, userList: updatedUserList};
+}
+
+function applyUnfollowUser(state, action) {
+  const { userId } = action;
+  const { userList } = state;
+  const updatedUserList = userList.map((user) => {
+    if(user.id === userId) {
+      return { ...user, following: false };
+    }
+    return user;
+  });
+
+  return {...state, userList: updatedUserList};
+}
+
 const actionCreators = {
   facebookLogin,
   usernameLogin,
   createAccount,
-  logout
+  logout,
+  followUser,
+  unfollowUser
 };
 
 export { actionCreators };
