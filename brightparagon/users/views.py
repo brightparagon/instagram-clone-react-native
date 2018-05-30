@@ -10,7 +10,7 @@ class ExploreUsers(APIView):
     def get(self, request, format=None):
 
         last_five = models.User.objects.all().order_by('-date_joined')[:5]
-        serializer = serializers.ListUserSerializer(last_five, many=True)
+        serializer = serializers.ListUserSerializer(last_five, many=True, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class FollowUser(APIView):
@@ -92,7 +92,7 @@ class UserFollowers(APIView):
 
         user_followers = found_user.followers.all()
 
-        serializer = serializers.ListUserSerializer(user_followers, many=True)
+        serializer = serializers.ListUserSerializer(user_followers, many=True, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class UserFollowing(APIView):
@@ -105,7 +105,7 @@ class UserFollowing(APIView):
 
         user_following = found_user.following.all()
 
-        serializer = serializers.ListUserSerializer(user_following, many=True)
+        serializer = serializers.ListUserSerializer(user_following, many=True, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class Search(APIView):
@@ -114,7 +114,7 @@ class Search(APIView):
         users = models.User.objects.filter(username__istartswith=username)
 
         if username is not None:
-            serializer = serializers.ListUserSerializer(users, many=True)
+            serializer = serializers.ListUserSerializer(users, many=True, context={'request': request})
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)

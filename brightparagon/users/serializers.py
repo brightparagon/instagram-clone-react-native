@@ -23,11 +23,21 @@ class UserProfileSerializer(serializers.ModelSerializer):
     )
 
 class ListUserSerializer(serializers.ModelSerializer):
+  following = serializers.SerializerMethodField();
+
   class Meta:
     model = models.User
     fields = (
       'id',
       'username',
       'profile_image',
-      'name'
+      'name',
+      'following'
     )
+
+  def get_following(self, obj):
+    if 'request' in self.context:
+      request = self.context['request']
+      if obj in request.user.following.all()
+        return True
+    return False
