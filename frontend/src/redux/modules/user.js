@@ -9,6 +9,7 @@ const SAVE_TOKEN = "SAVE_TOKEN";
 const LOGOUT = "LOGOUT"; // remove token in browser local storage
 const FOLLOW_USER = "FOLLOW_USER";
 const UNFOLLOW_USER = "UNFOLLOW_USER";
+const SET_EXPLORE = "SET_EXPLORE";
 
 // action creators
 function saveToken(token) {
@@ -35,6 +36,13 @@ function setUnfollowUser(userId) {
   return {
     type: UNFOLLOW_USER,
     userId
+  };
+}
+
+function setExplore(userList) {
+  return {
+    type: SET_EXPLORE,
+    userList
   };
 }
 
@@ -146,6 +154,25 @@ function unfollowUser(userId) {
   };
 }
 
+function getExplore() {
+  return (dispatch, getState) => {
+    const { user: { token } } = getState();
+    fetch("/users/explore/", {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => {
+      if (response.status === 401) {
+        dispatch(logout());
+      }
+      return response.json();
+    })
+    .then(json => dispatch(setExplore(json)));
+  };
+}
+
 // reducer
 function reducer(state = initialState, action) {
   switch(action.type) {
@@ -160,6 +187,9 @@ function reducer(state = initialState, action) {
 
     case UNFOLLOW_USER:
       return applyUnfollowUser(state, action);
+
+    case SET_EXPLORE:
+      return applySetExplore(state, action);
 
     default:
       return state;
@@ -210,13 +240,22 @@ function applyUnfollowUser(state, action) {
   return {...state, userList: updatedUserList};
 }
 
+function applySetExplore(state, action) {
+    const { userList } = action;
+    return {
+      ...state,
+      userList
+    };
+  }
+
 const actionCreators = {
   facebookLogin,
   usernameLogin,
   createAccount,
   logout,
   followUser,
-  unfollowUser
+  unfollowUser,
+  getExplore
 };
 
 export { actionCreators };
