@@ -10,6 +10,8 @@ const LOGOUT = "LOGOUT"; // remove token in browser local storage
 const FOLLOW_USER = "FOLLOW_USER";
 const UNFOLLOW_USER = "UNFOLLOW_USER";
 const SET_EXPLORE = "SET_EXPLORE";
+const SET_USER_LIST = "SET_USER_LIST";
+const SET_IMAGE_LIST = "SET_IMAGE_LIST";
 
 // action creators
 function saveToken(token) {
@@ -39,6 +41,13 @@ function setUnfollowUser(userId) {
   };
 }
 
+function setUserList(likes) {
+  return {
+    type: SET_USER_LIST,
+    likes
+  };
+}
+
 function setExplore(userList) {
   return {
     type: SET_EXPLORE,
@@ -46,9 +55,16 @@ function setExplore(userList) {
   };
 }
 
+function setImageList(imageList) {
+  return {
+    type: SET_IMAGE_LIST,
+    imageList
+  };
+}
+
 // API actions
 function facebookLogin(access_token) {
-  return (dispatch) => {
+  return dispatch => {
     fetch("/users/login/facebook/", {
       method: "POST",
       headers: {
@@ -60,16 +76,16 @@ function facebookLogin(access_token) {
     })
     .then(response => response.json())
     .then(json => {
-      if(json.token) {
+      if (json.token) {
         dispatch(saveToken(json.token));
       }
     })
-    .catch(error => console.error(error));
-  }
+    .catch(err => console.log(err));
+  };
 }
 
 function usernameLogin(username, password) {
-  return function(dispatch) {
+  return dispatch => {
     fetch("/rest-auth/login/", {
       method: "POST",
       headers: {
@@ -82,16 +98,16 @@ function usernameLogin(username, password) {
     })
     .then(response => response.json())
     .then(json => {
-      if(json.token) {
+      if (json.token) {
         dispatch(saveToken(json.token));
       }
     })
-    .catch(error => console.log(error));
+    .catch(err => console.log(err));
   };
 }
 
-function createAccount(username, password, email) {
-  return function(dispatch) {
+function createAccount(username, password, email, name) {
+  return dispatch => {
     fetch("/rest-auth/registration/", {
       method: "POST",
       headers: {
@@ -101,16 +117,37 @@ function createAccount(username, password, email) {
         username,
         password1: password,
         password2: password,
-        email
+        email,
+        name
       })
     })
     .then(response => response.json())
     .then(json => {
-      if(json.token) {
+      if (json.token) {
         dispatch(saveToken(json.token));
       }
     })
-    .catch(error => console.log(error));
+    .catch(err => console.log(err));
+  };
+}
+
+function getPhotoLikes(photoId) {
+  return (dispatch, getState) => {
+    const { user: { token } } = getState();
+    fetch(`/images/${photoId}/likes/`, {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    })
+    .then(response => {
+      if (response.status === 401) {
+        dispatch(logout());
+      }
+      return response.json();
+    })
+    .then(json => {
+      dispatch(setUserList(json));
+    });
   };
 }
 
@@ -124,7 +161,8 @@ function followUser(userId) {
         Authorization: `JWT ${token}`,
         "Content-Type": "application/json"
       }
-    }).then(response => {
+    })
+    .then((response) => {
       if (response.status === 401) {
         dispatch(logout());
       } else if (!response.ok) {
@@ -144,7 +182,8 @@ function unfollowUser(userId) {
         Authorization: `JWT ${token}`,
         "Content-Type": "application/json"
       }
-    }).then(response => {
+    })
+    .then((response) => {
       if (response.status === 401) {
         dispatch(logout());
       } else if (!response.ok) {
@@ -163,7 +202,7 @@ function getExplore() {
         "Content-Type": "application/json"
       }
     })
-    .then(response => {
+    .then((response) => {
       if (response.status === 401) {
         dispatch(logout());
       }
@@ -173,14 +212,63 @@ function getExplore() {
   };
 }
 
+function searchByTerm(searchTerm) {
+  return async (dispatch, getState) => {
+    const { user: { token } } = getState();
+    const userList = await searchUsers(token, searchTerm);
+    const imageList = await searchImages(token, searchTerm);
+    if (userList === 401 || imageList === 401) {
+      dispatch(logout());
+    }
+    dispatch(setUserList(userList));
+    dispatch(setImageList(imageList));
+  };
+}
+
+function searchUsers(token, searchTerm) {
+  return fetch(`/users/search/?username=${searchTerm}`, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => {
+    if (response.status === 401) {
+      return 401;
+    }
+    return response.json();
+  })
+  .then(json => json);
+}
+
+function searchImages(token, searchTerm) {
+  return fetch(`/images/search/?hashtags=${searchTerm}`, {
+    headers: {
+      Authorization: `JWT ${token}`,
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => {
+    if (response.status === 401) {
+      return 401;
+    }
+    return response.json();
+  })
+  .then(json => json);
+}
+
 // reducer
+
 function reducer(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
     case SAVE_TOKEN:
       return applySetToken(state, action);
-    
+
     case LOGOUT:
       return applyLogout(state, action);
+
+    case SET_USER_LIST:
+      return applySetUserList(state, action);
 
     case FOLLOW_USER:
       return applyFollowUser(state, action);
@@ -190,6 +278,9 @@ function reducer(state = initialState, action) {
 
     case SET_EXPLORE:
       return applySetExplore(state, action);
+
+    case SET_IMAGE_LIST:
+      return applySetImageList(state, action);
 
     default:
       return state;
@@ -214,17 +305,28 @@ function applyLogout(state, action) {
   };
 }
 
+function applySetUserList(state, action) {
+  const { likes } = action;
+  return {
+    ...state,
+    userList: likes
+  };
+}
+
 function applyFollowUser(state, action) {
   const { userId } = action;
   const { userList } = state;
+
   const updatedUserList = userList.map((user) => {
     if(user.id === userId) {
       return { ...user, following: true };
     }
     return user;
   });
-
-  return {...state, userList: updatedUserList};
+  return {
+    ...state,
+    userList: updatedUserList
+  };
 }
 
 function applyUnfollowUser(state, action) {
@@ -236,28 +338,39 @@ function applyUnfollowUser(state, action) {
     }
     return user;
   });
-
-  return {...state, userList: updatedUserList};
+  return { ...state, userList: updatedUserList };
 }
 
 function applySetExplore(state, action) {
-    const { userList } = action;
-    return {
-      ...state,
-      userList
-    };
-  }
+  const { userList } = action;
+  return {
+    ...state,
+    userList
+  };
+}
 
+function applySetImageList(state, action) {
+  const { imageList } = action;
+  return {
+    ...state,
+    imageList
+  };
+}
+
+// exports
 const actionCreators = {
   facebookLogin,
   usernameLogin,
   createAccount,
   logout,
+  getPhotoLikes,
   followUser,
   unfollowUser,
-  getExplore
+  getExplore,
+  searchByTerm
 };
 
 export { actionCreators };
 
+// export reducer by default
 export default reducer;
