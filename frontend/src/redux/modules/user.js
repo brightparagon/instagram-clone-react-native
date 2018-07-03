@@ -41,10 +41,10 @@ function setUnfollowUser(userId) {
   };
 }
 
-function setUserList(likes) {
+function setUserList(userList) {
   return {
     type: SET_USER_LIST,
-    likes
+    userList
   };
 }
 
@@ -306,10 +306,10 @@ function applyLogout(state, action) {
 }
 
 function applySetUserList(state, action) {
-  const { likes } = action;
+  const { userList } = action;
   return {
     ...state,
-    userList: likes
+    userList: userList
   };
 }
 
