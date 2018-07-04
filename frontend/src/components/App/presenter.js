@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Route, Switch } from "react-router-dom";
 import "./styles.scss";
-import Footer from "components/Footer";
 import Auth from "components/Auth";
+import Footer from "components/Footer";
 import Navigation from "components/Navigation";
 import Feed from "components/Feed";
 import Explore from "components/Explore";
@@ -21,7 +21,7 @@ App.propTypes = {
 
 const PrivateRoutes = props => (
   <Switch>
-    <Route key="1" exact path="/" component={Feed} />
+    <Route exact path="/" component={Feed} />
     <Route path="/explore" component={Explore} />
     <Route path="/search/:searchTerm" component={Search} />
   </Switch>
@@ -29,7 +29,7 @@ const PrivateRoutes = props => (
 
 const PublicRoutes = props => (
   <Switch>
-    <Route exact path="/" component={Auth} />,
+    <Route exact path="/" component={Auth} />
     <Route path="/recover" render={() => "recover password"} />
   </Switch>
 );

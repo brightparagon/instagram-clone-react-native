@@ -6,6 +6,11 @@ class Container extends Component {
     action: "login"
   };
 
+  render() {
+    const { action } = this.state;
+    return <Auth action={action} changeAction={this._changeAction} />;
+  }
+  
   _changeAction = () => {
     this.setState(prevState => {
       const { action } = prevState;
@@ -18,13 +23,8 @@ class Container extends Component {
           action: "login"
         };
       }
-    })
-  }
-
-  render() {
-    const { action } = this.state;
-    return <Auth action={action} changeAction={this._changeAction} />
-  }
+    });
+  };
 }
 
 export default Container;
