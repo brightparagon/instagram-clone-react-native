@@ -1,19 +1,19 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
+import { combineReducers, createStore, applyMiddleware } from "redux";
 import { routerReducer, routerMiddleware } from "react-router-redux";
-import createHistory from "history/createBrowserHistory";
-import { i18nState } from "redux-i18n";
 import { composeWithDevTools } from "redux-devtools-extension";
+import createHistory from "history/createBrowserHistory";
+import thunk from "redux-thunk";
 import user from "redux/modules/user";
 import photo from "redux/modules/photo";
-// import Reactotron from "ReactotronConfig"; // not used
+import { i18nState } from "redux-i18n";
 
-const NODE_ENV = process.env.NODE_ENV;
+const env = process.env.NODE_ENV;
 
 const history = createHistory();
+
 const middlewares = [thunk, routerMiddleware(history)];
 
-if (NODE_ENV === "development") {
+if (env === "development") {
   const { logger } = require("redux-logger");
   middlewares.push(logger);
 }
@@ -26,14 +26,14 @@ const reducer = combineReducers({
 });
 
 let store;
-if (NODE_ENV === "development") { // development
+
+if (env === "development") {
   store = initialState =>
-    // Reactotron.createStore(reducer, composeWithDevTools(applyMiddleware(...middlewares)));
     createStore(reducer, composeWithDevTools(applyMiddleware(...middlewares)));
-} else { // production
-  store = initialState =>
-    createStore(reducer, applyMiddleware(...middlewares));
+} else {
+  store = initialState => createStore(reducer, applyMiddleware(...middlewares));
 }
 
-export {history};
+export { history };
+
 export default store();

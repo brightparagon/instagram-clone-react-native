@@ -1,16 +1,9 @@
-// initial state for user reducer
-const initialState = {
-  isLoggedIn: localStorage.getItem("jwt") ? true : false,
-  token: localStorage.getItem("jwt") // if not exist it's null
-};
-
 // actions
 const SAVE_TOKEN = "SAVE_TOKEN";
-const LOGOUT = "LOGOUT"; // remove token in browser local storage
+const LOGOUT = "LOGOUT";
+const SET_USER_LIST = "SET_USER_LIST";
 const FOLLOW_USER = "FOLLOW_USER";
 const UNFOLLOW_USER = "UNFOLLOW_USER";
-const SET_EXPLORE = "SET_EXPLORE";
-const SET_USER_LIST = "SET_USER_LIST";
 const SET_IMAGE_LIST = "SET_IMAGE_LIST";
 
 // action creators
@@ -48,13 +41,6 @@ function setUserList(userList) {
   };
 }
 
-function setExplore(userList) {
-  return {
-    type: SET_EXPLORE,
-    userList
-  };
-}
-
 function setImageList(imageList) {
   return {
     type: SET_IMAGE_LIST,
@@ -74,13 +60,13 @@ function facebookLogin(access_token) {
         access_token
       })
     })
-    .then(response => response.json())
-    .then(json => {
-      if (json.token) {
-        dispatch(saveToken(json.token));
-      }
-    })
-    .catch(err => console.log(err));
+      .then(response => response.json())
+      .then(json => {
+        if (json.token) {
+          dispatch(saveToken(json.token));
+        }
+      })
+      .catch(err => console.log(err));
   };
 }
 
@@ -96,13 +82,13 @@ function usernameLogin(username, password) {
         password
       })
     })
-    .then(response => response.json())
-    .then(json => {
-      if (json.token) {
-        dispatch(saveToken(json.token));
-      }
-    })
-    .catch(err => console.log(err));
+      .then(response => response.json())
+      .then(json => {
+        if (json.token) {
+          dispatch(saveToken(json.token));
+        }
+      })
+      .catch(err => console.log(err));
   };
 }
 
@@ -121,13 +107,13 @@ function createAccount(username, password, email, name) {
         name
       })
     })
-    .then(response => response.json())
-    .then(json => {
-      if (json.token) {
-        dispatch(saveToken(json.token));
-      }
-    })
-    .catch(err => console.log(err));
+      .then(response => response.json())
+      .then(json => {
+        if (json.token) {
+          dispatch(saveToken(json.token));
+        }
+      })
+      .catch(err => console.log(err));
   };
 }
 
@@ -139,15 +125,15 @@ function getPhotoLikes(photoId) {
         Authorization: `JWT ${token}`
       }
     })
-    .then(response => {
-      if (response.status === 401) {
-        dispatch(logout());
-      }
-      return response.json();
-    })
-    .then(json => {
-      dispatch(setUserList(json));
-    });
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(logout());
+        }
+        return response.json();
+      })
+      .then(json => {
+        dispatch(setUserList(json));
+      });
   };
 }
 
@@ -161,8 +147,7 @@ function followUser(userId) {
         Authorization: `JWT ${token}`,
         "Content-Type": "application/json"
       }
-    })
-    .then((response) => {
+    }).then(response => {
       if (response.status === 401) {
         dispatch(logout());
       } else if (!response.ok) {
@@ -182,8 +167,7 @@ function unfollowUser(userId) {
         Authorization: `JWT ${token}`,
         "Content-Type": "application/json"
       }
-    })
-    .then((response) => {
+    }).then(response => {
       if (response.status === 401) {
         dispatch(logout());
       } else if (!response.ok) {
@@ -202,13 +186,13 @@ function getExplore() {
         "Content-Type": "application/json"
       }
     })
-    .then((response) => {
-      if (response.status === 401) {
-        dispatch(logout());
-      }
-      return response.json();
-    })
-    .then(json => dispatch(setExplore(json)));
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(logout());
+        }
+        return response.json();
+      })
+      .then(json => dispatch(setUserList(json)));
   };
 }
 
@@ -232,13 +216,13 @@ function searchUsers(token, searchTerm) {
       "Content-Type": "application/json"
     }
   })
-  .then(response => {
-    if (response.status === 401) {
-      return 401;
-    }
-    return response.json();
-  })
-  .then(json => json);
+    .then(response => {
+      if (response.status === 401) {
+        return 401;
+      }
+      return response.json();
+    })
+    .then(json => json);
 }
 
 function searchImages(token, searchTerm) {
@@ -248,40 +232,36 @@ function searchImages(token, searchTerm) {
       "Content-Type": "application/json"
     }
   })
-  .then(response => {
-    if (response.status === 401) {
-      return 401;
-    }
-    return response.json();
-  })
-  .then(json => json);
+    .then(response => {
+      if (response.status === 401) {
+        return 401;
+      }
+      return response.json();
+    })
+    .then(json => json);
 }
 
-// reducer
+// initial state
+const initialState = {
+  isLoggedIn: localStorage.getItem("jwt") ? true : false,
+  token: localStorage.getItem("jwt")
+};
 
+// reducer
 function reducer(state = initialState, action) {
   switch (action.type) {
     case SAVE_TOKEN:
       return applySetToken(state, action);
-
     case LOGOUT:
       return applyLogout(state, action);
-
     case SET_USER_LIST:
       return applySetUserList(state, action);
-
     case FOLLOW_USER:
       return applyFollowUser(state, action);
-
     case UNFOLLOW_USER:
       return applyUnfollowUser(state, action);
-
-    case SET_EXPLORE:
-      return applySetExplore(state, action);
-
     case SET_IMAGE_LIST:
       return applySetImageList(state, action);
-
     default:
       return state;
   }
@@ -294,7 +274,7 @@ function applySetToken(state, action) {
   return {
     ...state,
     isLoggedIn: true,
-    token
+    token: token
   };
 }
 
@@ -309,16 +289,15 @@ function applySetUserList(state, action) {
   const { userList } = action;
   return {
     ...state,
-    userList: userList
+    userList
   };
 }
 
 function applyFollowUser(state, action) {
   const { userId } = action;
   const { userList } = state;
-
-  const updatedUserList = userList.map((user) => {
-    if(user.id === userId) {
+  const updatedUserList = userList.map(user => {
+    if (user.id === userId) {
       return { ...user, following: true };
     }
     return user;
@@ -332,21 +311,13 @@ function applyFollowUser(state, action) {
 function applyUnfollowUser(state, action) {
   const { userId } = action;
   const { userList } = state;
-  const updatedUserList = userList.map((user) => {
-    if(user.id === userId) {
+  const updatedUserList = userList.map(user => {
+    if (user.id === userId) {
       return { ...user, following: false };
     }
     return user;
   });
   return { ...state, userList: updatedUserList };
-}
-
-function applySetExplore(state, action) {
-  const { userList } = action;
-  return {
-    ...state,
-    userList
-  };
 }
 
 function applySetImageList(state, action) {

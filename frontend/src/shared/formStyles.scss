@@ -13,7 +13,7 @@
       border: 1px solid #efefef;
       border-radius: 3px;
       background-color: $bg-color;
-      margin-bottom: 5px;
+      margin-bottom: 7px;
       font-size: $normal-font-size;
       padding: 9px 0 7px 8px;
       font-weight: 400;
@@ -61,13 +61,16 @@
       opacity: 0.8;
     }
   }
-  .facebookLink {
+  .facebook-link {
+    align-items: center;
     color: #385185;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+    cursor: pointer;
     background-color: white;
     border: 0;
     font-size: $normal-font-size;
+    text-align: center;
     i {
       margin-right: 5px;
     }
@@ -76,8 +79,25 @@
       outline: none;
     }
   }
-  .forgotLink {
+  .forgot-link {
     font-size: $small-font-size;
     color: $dark-blue;
+  }
+  .signup-header {
+    font-size: 17px;
+    color: $dark-grey;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .terms {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 20px;
+    line-height: 20px;
+    color: $dark-grey;
+    span {
+      font-weight: 600;
+      cursor: pointer;
+    }
   }
 }
