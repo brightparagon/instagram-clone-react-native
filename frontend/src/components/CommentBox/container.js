@@ -6,12 +6,21 @@ class Container extends Component {
   state = {
     comment: ""
   };
-
-  // a way of defining prop-types when using class component
+  
   static propTypes = {
     photoId: PropTypes.number.isRequired,
     submitComment: PropTypes.func.isRequired
   };
+
+  render() {
+    return (
+      <CommentBox
+        {...this.state}
+        handleInputChange={this._handleInputChange}
+        handleKeyPress={this._handleKeyPress}
+      />
+    );
+  }
 
   _handleInputChange = event => {
     const { target: { value } } = event;
@@ -27,19 +36,11 @@ class Container extends Component {
     if (key === "Enter") {
       event.preventDefault();
       submitComment(comment);
-      this.setState({ comment: "" });
+      this.setState({
+        comment: ""
+      });
     }
   };
-
-  render() {
-    return (
-      <CommentBox
-        {...this.state}
-        handleInputChange={this._handleInputChange}
-        handleKeyPress={this._handleKeyPress}
-      />
-    );
-  }
 }
 
 export default Container;
