@@ -6,20 +6,17 @@ class Container extends Component {
   state = {
     loading: true
   };
+
   static propTypes = {
     getExplore: PropTypes.func.isRequired,
     userList: PropTypes.array
   };
+  
   componentDidMount() {
     const { getExplore } = this.props;
-    if (!this.props.userList) {
-      getExplore();
-    } else {
-      this.setState({
-        loading: false
-      });
-    }
+    getExplore();
   }
+
   componentWillReceiveProps = nextProps => {
     if (nextProps.userList) {
       this.setState({
@@ -27,6 +24,7 @@ class Container extends Component {
       });
     }
   };
+  
   render() {
     const { userList } = this.props;
     return <Explore {...this.state} userList={userList} />;

@@ -5,9 +5,9 @@ import Loading from "components/Loading";
 import FeedPhoto from "components/FeedPhoto";
 
 const Feed = props => {
-  if(props.loading) {
+  if (props.loading) {
     return <LoadingFeed />;
-  } else if(props.feed) {
+  } else if (props.feed) {
     return <RenderFeed {...props} />;
   }
 };
