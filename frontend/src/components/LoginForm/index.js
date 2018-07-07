@@ -1,14 +1,14 @@
 import { connect } from "react-redux";
 import Container from "./container";
-import { actionCreators } from "redux/modules/user";
+import { actionCreators as userActions } from "redux/modules/user";
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     facebookLogin: access_token => {
-      dispatch(actionCreators.facebookLogin(access_token));
+      dispatch(userActions.facebookLogin(access_token));
     },
-    usernameLogin: (username, password) => {
-      dispatch(actionCreators.usernameLogin(username, password));
+    usernameLogin: (email, password) => {
+      dispatch(userActions.usernameLogin(email, password));
     }
   };
 };

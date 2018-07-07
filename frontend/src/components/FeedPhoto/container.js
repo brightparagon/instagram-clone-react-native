@@ -6,20 +6,6 @@ class Container extends Component {
     seeingLikes: false
   };
 
-  _openLikes = () => {
-    const { getPhotoLikes } = this.props;
-    this.setState({
-      seeingLikes: true
-    });
-    getPhotoLikes();
-  };
-  
-  _closeLikes = () => {
-    this.setState({
-      seeingLikes: false
-    });
-  };
-
   render() {
     return (
       <FeedPhoto
@@ -30,6 +16,22 @@ class Container extends Component {
       />
     );
   }
+
+  _openLikes = () => {
+    const { getPhotoLikes, likes } = this.props;
+    this.setState({
+      seeingLikes: true
+    });
+    if (!likes) {
+      getPhotoLikes();
+    }
+  };
+  
+  _closeLikes = () => {
+    this.setState({
+      seeingLikes: false
+    });
+  };
 }
 
 export default Container;

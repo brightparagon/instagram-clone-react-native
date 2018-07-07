@@ -6,14 +6,13 @@ import PhotoComments from "components/PhotoComments";
 import TimeStamp from "components/TimeStamp";
 import CommentBox from "components/CommentBox";
 import UserList from "components/UserList";
-import noPhoto from "images/noPhoto.jpg";
 
 const FeedPhoto = (props, context) => {
   return (
     <div className={styles.feedPhoto}>
       <header className={styles.header}>
         <img
-          src={props.creator.profile_image || noPhoto}
+          src={props.creator.profile_image || require("images/noPhoto.jpg")}
           alt={props.creator.username}
           className={styles.image}
         />
@@ -39,11 +38,7 @@ const FeedPhoto = (props, context) => {
         <CommentBox photoId={props.id} />
       </div>
       {props.seeingLikes && (
-        <UserList
-          title={context.t("Likes")}
-          closeLikes={props.closeLikes}
-          userList={props.likes}
-        />
+        <UserList title={context.t("Likes")} closeLikes={props.closeLikes} />
       )}
     </div>
   );
@@ -77,14 +72,7 @@ FeedPhoto.propTypes = {
   is_liked: PropTypes.bool.isRequired,
   seeingLikes: PropTypes.bool.isRequired,
   openLikes: PropTypes.func.isRequired,
-  closeLikes: PropTypes.func.isRequired,
-  likes: PropTypes.arrayOf(
-    PropTypes.shape({
-      profile_image: PropTypes.string,
-      username: PropTypes.string.isRequired,
-      name: PropTypes.string
-    }).isRequired
-  )
+  closeLikes: PropTypes.func.isRequired
 };
 
 export default FeedPhoto;
