@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import SignupForm from "./presenter";
 
-class Container extends React.Component {
+class Container extends Component {
   state = {
     email: "",
     name: "",
@@ -13,24 +13,6 @@ class Container extends React.Component {
   static propTypes = {
     facebookLogin: PropTypes.func.isRequired,
     createAccount: PropTypes.func.isRequired
-  };
-
-  _handleInputChange = event => {
-    const { target: { name, value } } = event;
-    this.setState({
-      [name]: value
-    });
-  };
- 
-  _handleSubmit = event => {
-    event.preventDefault();
-    const { username, password, email } = this.state;
-    this.props.createAccount(username, password, email);
-  };
-
-  _handleFacebookLogin = response => {
-    const { facebookLogin } = this.props;
-    facebookLogin(response.accessToken);
   };
 
   render() {
@@ -47,6 +29,25 @@ class Container extends React.Component {
       />
     );
   }
+
+  _handleInputChange = event => {
+    const { target: { value, name } } = event;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  _handleSubmit = event => {
+    const { username, password, email, name } = this.state;
+    const { createAccount } = this.props;
+    event.preventDefault();
+    createAccount(username, password, email, name);
+  };
+  
+  _handleFacebookLogin = response => {
+    const { facebookLogin } = this.props;
+    facebookLogin(response.accessToken);
+  };
 }
 
 export default Container;
