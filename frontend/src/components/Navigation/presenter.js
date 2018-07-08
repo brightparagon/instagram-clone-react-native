@@ -3,7 +3,6 @@ import Ionicon from "react-ionicons";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styles from "./styles.scss";
-import logo from "images/logo.png";
 
 const Navigation = (props, context) => (
   <div className={styles.navigation}>
@@ -11,18 +10,22 @@ const Navigation = (props, context) => (
       <div className={styles.column}>
         <Link to="/">
           <img
-            src={logo}
+            src={require("images/logo.png")}
             className={styles.logo}
             alt={context.t("Logo")}
           />
         </Link>
       </div>
       <div className={styles.column}>
-        <input
-          type="text"
-          placeholder={context.t("Search")}
-          className={styles.searchInput}
-        />
+        <form method="post" onSubmit={props.onSubmit}>
+          <input
+            type="text"
+            placeholder={context.t("Search")}
+            className={styles.searchInput}
+            value={props.value}
+            onChange={props.onInputChange}
+          />
+        </form>
       </div>
       <div className={styles.column}>
         <div className={styles.navIcon}>
@@ -42,6 +45,12 @@ const Navigation = (props, context) => (
     </div>
   </div>
 );
+
+Navigation.propTypes = {
+  onInputChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired
+};
 
 Navigation.contextTypes = {
   t: PropTypes.func.isRequired
