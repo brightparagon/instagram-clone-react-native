@@ -2,5 +2,8 @@
   "python.pythonPath": "/Users/brightparagon/.local/share/virtualenvs/instagram-clone-rn-88tqBgss/bin/python",
   "python.linting.pylintEnabled": false,
   "python.linting.enabled": false,
-  "python.linting.flake8Enabled": true
+  "python.linting.flake8Enabled": true,
+  "editor.formatOnSave": true,
+  "javascript.format.enable": false,
+  "prettier.eslintIntegration": true
 }

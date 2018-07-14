@@ -302,7 +302,7 @@ pip-selfcheck.json
 
 
 
-
+.vscode/
 brightparagon/media/
 .idea/
 Pipfile
